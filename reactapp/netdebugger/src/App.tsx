@@ -1,6 +1,7 @@
 import Alert from "./components/Alert";
 import ListGroup from "./components/ListGroup";
 import Button from "./components/Button";
+import { AiFillClockCircle } from "react-icons/ai";
 import { Children, useState } from "react";
 
 function App() {
@@ -14,8 +15,7 @@ function App() {
         onSelectItem={(item: string) => console.log(item)}
       />
       <Alert show={click} onClickClose={() => setClick(false)}>
-        {" "}
-        bruh{" "}
+        bruh <AiFillClockCircle color="blue" size={60} />
       </Alert>
       <Button
         color="danger"
