@@ -1,31 +1,37 @@
 import { FormEvent, useRef, useState } from "react";
+import { FieldValues, useForm, FormState } from "react-hook-form";
+import { number, z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  name: z.string().min(3),
+  number: z.string().min(18),
+});
+
+type FormData = z.infer<typeof schema>;
 
 const Form = () => {
-  const [person, setPerson] = useState({
-    name: "",
-    age: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const HandleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    console.log(person);
-  };
+  const onSubmit = (data: FieldValues) => console.log(data);
 
   return (
-    <form onSubmit={HandleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
           Name
         </label>
         <input
-          onChange={(event) =>
-            setPerson({ ...person, name: event.target.value })
-          }
-          value={person.name}
+          {...register("name")}
           id="name"
           type="text"
           className="form-control"
         />
+        {errors.name && <p className="text-danger">{errors.name?.message}</p>}
       </div>
 
       <div className="mb-3">
@@ -33,17 +39,19 @@ const Form = () => {
           Number
         </label>
         <input
-          onChange={(event) =>
-            setPerson({ ...person, age: event.target.value })
-          }
-          value={person.age}
+          {...register("number")}
           id="number"
           type="number"
           className="form-control"
         />
       </div>
 
-      <button id="submit" type="submit" className="btn btn-primary">
+      <button
+        disabled={!isValid}
+        id="submit"
+        type="submit"
+        className="btn btn-primary"
+      >
         Submit
       </button>
     </form>
