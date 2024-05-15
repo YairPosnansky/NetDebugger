@@ -1,12 +1,10 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 const Form = () => {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const numberRef = useRef<HTMLInputElement>(null);
-  const person = {
-    name: nameRef.current?.value,
-    age: numberRef.current?.value,
-  };
+  const [person, setPerson] = useState({
+    name: "",
+    age: "",
+  });
 
   const HandleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -19,7 +17,15 @@ const Form = () => {
         <label htmlFor="name" className="form-label">
           Name
         </label>
-        <input ref={nameRef} id="name" type="text" className="form-control" />
+        <input
+          onChange={(event) =>
+            setPerson({ ...person, name: event.target.value })
+          }
+          value={person.name}
+          id="name"
+          type="text"
+          className="form-control"
+        />
       </div>
 
       <div className="mb-3">
@@ -27,7 +33,10 @@ const Form = () => {
           Number
         </label>
         <input
-          ref={numberRef}
+          onChange={(event) =>
+            setPerson({ ...person, age: event.target.value })
+          }
+          value={person.age}
           id="number"
           type="number"
           className="form-control"
