@@ -1,5 +1,7 @@
+import Sniffer from "./pages/Sniffer";
+
 function App() {
-  return <div></div>;
+  return <Sniffer></Sniffer>;
 }
 
 export default App;
